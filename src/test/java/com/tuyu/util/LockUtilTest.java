@@ -1,6 +1,8 @@
 package com.tuyu.util;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import static org.junit.Assert.*;
@@ -14,6 +16,8 @@ import static org.junit.Assert.*;
  */
 public class LockUtilTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(LockUtilTest.class);
+
     private static Jedis jedis = new Jedis();
     private static String lockKey = "lock";
     private static String requestId = "scutuyu-redis-distributed-lock";
@@ -24,6 +28,7 @@ public class LockUtilTest {
      */
     @Test
     public void testGetAndReleaseLock() {
+        logger.info("测试开始....");
         boolean b = LockUtil.tryGetDistributedLock(jedis, lockKey, requestId, expireTime);
         if (b) {
             System.out.println("加锁成功!---->");
@@ -38,7 +43,7 @@ public class LockUtilTest {
         } else {
             System.out.println("解锁失败!---->");
         }
-
+        logger.info("测试结结束....");
     }
 
 }
